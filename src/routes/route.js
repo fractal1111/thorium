@@ -31,9 +31,15 @@ router.get('/hello',function (req,res){
 
    let merged = _.union([2,1,2],[1,1,2],[3,14,1],[22,33,44],[32,22,1])
    let finalMerged = _.uniq(merged);
+   
+   const musicGods = _.fromPairs([['HipHop','Kendrick Lamar'],['Rock','Led Zeplin'],['Edm','Avicii']]);
+
+
+
    console.log(chunk);
    console.log(tail);
    console.log(finalMerged);
+   console.log(musicGods);
 
 
 
