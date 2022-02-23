@@ -1,119 +1,151 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/students/:name', function(req, res) {
-    let studentName = req.params.name
-    console.log(studentName)
-    res.send(studentName)
-})
+let players = [ 
+            {
+                  
+                 "name": "manish",
+                 "dob": "1/1/1995",
+                 "gender":"male",
+                 "city": "jalandhar",
+                 "sports": [ " swimming"],
+                 "bookings": [
 
-router.get('/movies',function(req,res){
-    const movie = ['Shutter Island','Titanic','Django Unchained','Revenant']
-     res.send(movie);
+                    {
+                        "bookingNumber":1,
+                        "sportsId":"",
+                        "centreId":"",
+                        "type":"private",
+                        "slot": "12345",
+                        "bookedOn":"31/08/2021",
+                        "bookedFor":" 01/09/2021"
+                    },
+                    {
+                        "bookingNumber":2,
+                        "sportsId":"",
+                        "centreId":"",
+                        "type":"private",
+                        "slot": "123456",
+                        "bookedOn":"31/08/2021",
+                        "bookedFor":" 03/09/2021"
+                    }
 
+                 ]
+          },
+         
+         
+          {
+            "name": "Rajnish",
+            "dob": "1/3/1998",
+            "gender":"male",
+            "city": "jalandhar",
+            "sports": [ " swimming"],
+            "bookings": [   ]
 
-
-})
-
-router.get('/movies/:index',function(req,res){
-
-
-const movie = ['Shutter Island','Titanic','Django Unchained','Revenant']
-let mn =req.params.index;
-if(mn>movie.length-1){
-    res.send('Use valid index')
-}
-else if(mn<movie.length){
-
-    let x = movie[mn]
-    res.send(x)
-}
-
-
-})
- 
-
-router.get('/films', function(req,res){
-
-const film = [
-
-    {
-        "id":1, "name":"Shutter Island"
-    },
-   
-    {
-        "id":2, "name":"Titanic"   
-     },
-
-     {
-         "id":3, "name":"Django Unchained"
-
-
-     },
-
-     {
-        
-        "id":4 , "name":"revenant"
-
-     }
-
-
-]
-res.send(film)
-
-})
-
-
-router.get('/films/:filmsid', function(req,res){
-      
-
-    let fi=req.params.filmsid;
-    const film = [
-    
-        {
-            "id":1, "name":"Shutter Island"
-        },
-       
-        {
-            "id":2, "name":"Titanic"   
          },
+
+          {
+
+            "name": "ramu",
+            "dob": "1/2/1999",
+            "gender":"male",
+            "city": "jalandhar",
+            "sports": [ " swimming"],
+            "bookings": [  ]
+
+
+
+
+          }
+
+        ]
+
+        let a = players.length;
+
+// Part 1 ==> Add new player.
+
+router.post('/player',function(req,res){
     
-         {
-             "id":3, "name":"Django Unchained"
-    
-    
-         },
-    
-         {
+    let ele = req.body.nplayer.name;
+    let ele1 = req.body.nplayer
+    for (let i=0;i<a;i++){
+        if(ele === players[i].name ){
+            console.log(ele)
+            res.send("player already exists")
             
-            "id":4 , "name":"revenant"
-    
-         }
-    
-    
-    ]
-
-    if(fi>film.length){
-
-        res.send("invalid id")
-    }
-    else {
-
-        for(let i=0;i<film.length;i++){
-            if(film[i].id==fi){
-
-                res.send(film[i])
-            }
-
+           
         }
+       else if (i === a){
+
+            players.push(ele1)
+            console.log(ele1)
+            res.send({data :players , status : true})
+           
+        }
+      
     }
    
-   
-   
-   
-    res.send(film)
-    
-    })
+     
+
+
+
+})
+
+// part 2 (incompelete)
+
+
+router.post('/player/:playerName/booking/:bookingId'), function (req,res){
+
+    let bi = req.params.bookingId;
+    let bkid = req.body.book.bookingId;
+    let pn = req.params.playerName;
+    let x = req.body.book
+     
+    for(let i=0;i<a;i++){
+
+        if(pn==players[i].name){
+             
+           for(let j=0;j<booking[i].length;j++){
+               if (bkid==booking[i].bookingNumber){
+                   res.send("bookin invalid")
+               }
+               else{
+                   booking[i].push(x)
+                   res.send()
+
+               }
+
+
+           }
+
+           
+        }
+
+        else{
+            res.send("player does not exist")
+        }
+
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
 
 
 
