@@ -2,152 +2,122 @@ const express = require('express');
 const router = express.Router();
 
 let players = [ 
+    {
+          
+         "name":"Manish",
+         "dob": "11/08/1995",
+         "gender":"male",
+         "city": "Jalandhar",
+         "sports": [ " Badminton"],
+         "bookings": [
+
             {
-                  
-                 "name": "manish",
-                 "dob": "1/1/1995",
-                 "gender":"male",
-                 "city": "jalandhar",
-                 "sports": [ " swimming"],
-                 "bookings": [
+                "bookingNumber":1,
+                "sportsId":"",
+                "centreId":"",
+                "type":"private",
+                "slot": "12345",
+                "bookedOn":"31/08/2021",
+                "bookedFor":" 01/09/2021"
+            },
+            {
+                "bookingNumber":2,
+                "sportsId":"",
+                "centreId":"",
+                "type":"private",
+                "slot": "123456",
+                "bookedOn":"31/08/2021",
+                "bookedFor":" 03/09/2021"
+            }
 
-                    {
-                        "bookingNumber":1,
-                        "sportsId":"",
-                        "centreId":"",
-                        "type":"private",
-                        "slot": "12345",
-                        "bookedOn":"31/08/2021",
-                        "bookedFor":" 01/09/2021"
-                    },
-                    {
-                        "bookingNumber":2,
-                        "sportsId":"",
-                        "centreId":"",
-                        "type":"private",
-                        "slot": "123456",
-                        "bookedOn":"31/08/2021",
-                        "bookedFor":" 03/09/2021"
-                    }
+         ]
+  },
+ 
+ 
+  {
+    "name": "Rajnish",
+    "dob": "1/3/1998",
+    "gender":"male",
+    "city": "Delhi",
+    "sports": [ " Football"],
+    "bookings": [   ]
 
-                 ]
-          },
-         
-         
-          {
-            "name": "Rajnish",
-            "dob": "1/3/1998",
-            "gender":"male",
-            "city": "jalandhar",
-            "sports": [ " swimming"],
-            "bookings": [   ]
+ },
 
-         },
+  {
 
-          {
-
-            "name": "ramu",
-            "dob": "1/2/1999",
-            "gender":"male",
-            "city": "jalandhar",
-            "sports": [ " swimming"],
-            "bookings": [  ]
+    "name": "Sakshi",
+    "dob": "1/2/1999",
+    "gender":"female",
+    "city": "Mumbai",
+    "sports": [ " Cricket"],
+    "bookings": [  ]
 
 
 
 
-          }
+  }
 
-        ]
+]
 
-        let a = players.length;
+
 
 // Part 1 ==> Add new player.
 
 router.post('/player',function(req,res){
-    
-    let ele = req.body.nplayer.name;
-    let ele1 = req.body.nplayer
-    for (let i=0;i<a;i++){
-        if(ele === players[i].name ){
-            console.log(ele)
-            res.send("player already exists")
-            
-           
-        }
-       else if (i === a){
-
-            players.push(ele1)
-            console.log(ele1)
-            res.send({data :players , status : true})
-           
-        }
-      
-    }
-   
-     
 
 
+let np =req.body.nplayer;
+
+for(let i=0;i<players.length;i++){
+if(np.name==players[i].name){
+    return res.send("player already exists")
+}
+}
+players.push(np);
+return res.send(players);
 
 })
 
-// part 2 (incompelete)
+// Part 2 ===> booking
+
+router.post('/players/:playerName/bookings/:bookingid',function(req,res){
+let playerName = req.params.playerName;
+let bookingId = req.params.bookingid;
+let booking = req.body;
+let bn = req.body.bookingNumber;
 
 
-router.post('/player/:playerName/booking/:bookingId'), function (req,res){
+for(let i=0;i<players.length;i++){
 
-    let bi = req.params.bookingId;
-    let bkid = req.body.book.bookingId;
-    let pn = req.params.playerName;
-    let x = req.body.book
+if(playerName==players[i].name){
+    console.log(playerName==players[i].name)
+
+    
+     let x=  players[i].bookings.find(ele=>ele.bookingNumber==bookingId)
+     let y=  players[i].bookings.find(ele=>ele.bookingNumber==bn)
      
-    for(let i=0;i<a;i++){
+     if ( x||y ){
+        return res.send("Booking id already exists")
 
-        if(pn==players[i].name){
-             
-           for(let j=0;j<booking[i].length;j++){
-               if (bkid==booking[i].bookingNumber){
-                   res.send("bookin invalid")
-               }
-               else{
-                   booking[i].push(x)
-                   res.send()
-
-               }
-
-
-           }
-
-           
-        }
-
-        else{
-            res.send("player does not exist")
-        }
-
-
-
-
-
-
+     }
+        players[i].bookings.push(booking)
+        return res.send(players)
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
 
+return res.send("Player does not exist")
+
+})
 
 
 
-module.exports = router;
+
+
+
+
+
+module.exports= router;
+
