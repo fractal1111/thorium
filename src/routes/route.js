@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+//part 1
+
 router.get('/students/:name', function(req, res) {
     let studentName = req.params.name
     console.log(studentName)
@@ -14,7 +16,7 @@ router.get('/movies',function(req,res){
 
 
 })
-
+//part 2
 router.get('/movies/:index',function(req,res){
 
 
@@ -32,6 +34,7 @@ else if(mn<movie.length){
 
 })
  
+//part 3
 
 router.get('/films', function(req,res){
 
@@ -63,7 +66,7 @@ res.send(film)
 
 })
 
-
+// part 4
 router.get('/films/:filmsid', function(req,res){
       
 
@@ -93,12 +96,7 @@ router.get('/films/:filmsid', function(req,res){
     
     ]
 
-    if(fi>film.length){
-
-        res.send("invalid id")
-    }
-    else {
-
+   
         for(let i=0;i<film.length;i++){
             if(film[i].id==fi){
 
@@ -106,12 +104,12 @@ router.get('/films/:filmsid', function(req,res){
             }
 
         }
-    }
+        res.send("invalid id")
+    
    
    
    
    
-    res.send(film)
     
     })
 
