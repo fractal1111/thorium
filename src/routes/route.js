@@ -14,10 +14,10 @@ router.get("/booksList", BookController.booksList)
 
 router.get("/booksInYear/:year" , BookController.getBooksInYear)
 
-router.get("/getParticularBook/:authorName/:year/:pages/:price" , BookController.getParticularBook)
+router.get("/getParticularBook" , BookController.getParticularBook)
 
 router.get("/getRandomBooks" , BookController.getRandomBooks)
 
-router.get("/ndian", BookController.getIXINRBooks)
+router.get("/indian", BookController.getIXINRBooks)
 
 module.exports = router;

@@ -28,23 +28,24 @@ const booksList= async function (req, res) {
 // part 4 
 const getParticularBook = async function(req,res){
 
-    let y = req.query.year
-    let an = req.query.authorName
-    let pages = req.querry.pages
-    let price = req.querry.price
+   let arr = Object.entries(req.body);
+   let arr1 = arr.map(([p,v]) => ({[p] :v}) )
+   console.log(arr)
+   console.log(arr1)
+
     
-    let allBooks= await BookModel.find({authorName:{$eq : an}})
+    let allBooks= await BookModel.find({ $or : arr1})
     res.send({msg :allBooks})
 
 
 
 }
 
-//part 5 (not working)
+//part 5 
 
 const getIXINRBooks = async function( req , res){
 
- let allBooks = await BookModel.find({ "prices.indianPrices": { $in : ['100','200','500']} })
+ let allBooks = await BookModel.find({ "prices.indianPrice": { $in : ['100','200','500']} })
  res.send({msg : allBooks})
 }
 
