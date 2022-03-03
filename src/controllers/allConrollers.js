@@ -52,9 +52,30 @@ res.send({msg:library})
 
 
 }
+//part 5 update
+const updatedBooks= async function(req,res){
+let pub = await BookModel.updateMany({publisher:"6220694cc747d3f147c193a7"}, {$set:{isHardCover : true}})
+ 
+let hub = await BookModel.updateMany({publisher:"622068efc747d3f147c193a1"},{$set:{isHardCover: true}})
 
+
+let uprice = await BookModel.find().populate('author')
+
+let x = uprice.filter(ele => ele.author.rating>3.5)
+
+for(let i=0;i<x.length;i++){
+
+    let ubp = await BookModel.findOneAndUpdate({bookName:x[i].bookName},{$set:{price: (x[i].price + 10)}})
+    console.log(ubp)
+}
+
+res.send({msg: pub ,hub})
+
+
+}
 
 module.exports.createAuthor= createAuthor
 module.exports.createPublisher=createPublisher
 module.exports.createBook=createBook
 module.exports.allBooks=allBooks
+module.exports.updatedBooks=updatedBooks
