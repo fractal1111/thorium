@@ -54,23 +54,28 @@ res.send({msg:library})
 }
 //part 5 update
 const updatedBooks= async function(req,res){
-let pub = await BookModel.updateMany({publisher:"6220694cc747d3f147c193a7"}, {$set:{isHardCover : true}})
- 
-let hub = await BookModel.updateMany({publisher:"622068efc747d3f147c193a1"},{$set:{isHardCover: true}})
+    let x = await PublisherModel.find({publisherName:{$in:["Penguin","Harper Collins"]}}).select({_id:1})
+    let y = x.map(ele=>ele._id)
+    let z=[]
+    
+    for(let i=0;i<y.length;i++){
+     
+        let ihc = await BookModel.updateMany({publisher:y[i]},{$set:{isHardCover:true}},{new:true})
+        
+        z.push(ihc)
 
+    }
+    
+    let a = await AuthorModel.find({rating:{$gt:3.5}}).select({_id:1})
+    let id = a.map(inp=>inp._id)
+    let updatedPrice=[]
+    for(let j=0;j<id.length;j++){
+        let up = await BookModel.updateMany({author:id[j]},{$inc:{price:+10}},{new:true})
+        updatedPrice.push(up)
+       
 
-let uprice = await BookModel.find().populate('author')
-
-let x = uprice.filter(ele => ele.author.rating>3.5)
-
-for(let i=0;i<x.length;i++){
-
-    let ubp = await BookModel.findOneAndUpdate({bookName:x[i].bookName},{$set:{price: (x[i].price + 10)}})
-    console.log(ubp)
-}
-
-res.send({msg: pub ,hub})
-
+    } 
+    res.send({msg: z,updatedPrice})
 
 }
 
