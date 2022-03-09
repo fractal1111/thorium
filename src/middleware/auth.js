@@ -1,12 +1,30 @@
-const authenticate = function(req, req, next) {
-    //check the token in request header
-    //validate this token
+const jwt = require("jsonwebtoken");
 
-    next()
+const tokenChecker = function(req,res,next){
+
+
+    let token = req.headers["x-auth-token"]
+    if(!token){
+        return res.send("Token missing")
+    };
+
+   
+   try{ 
+        let decodedToken = jwt.verify(token ,"functionup-thorium" )
+    if(decodedToken){
+        if(decodedToken.userId===req.params.userId){
+            next()
+        }
+        else
+        {return res.send("Unauthorized user ")}
+    }
+   
+   }
+   catch(err){return res.send("invalid token")}
+   
+ 
+
 }
 
 
-const authorise = function(req, res, next) {
-    // comapre the logged in user's id and the id in request
-    next()
-}
+module.exports.tokenChecker=tokenChecker;
