@@ -49,6 +49,7 @@ const getUserData = async function (req, res) {
 //part 4
 const updateUser = async function (req, res) {
   
+  let ptu= req.body
   
   let userId = req.params.userId;
   let user = await userModel.findById(userId);
@@ -58,7 +59,7 @@ const updateUser = async function (req, res) {
   }
 
 
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, {$set:{age:26}},{new:true});
+  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, {$set:ptu},{new:true});
   res.send({ status: "updated user", data: updatedUser });
 };
 
