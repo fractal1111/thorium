@@ -3,23 +3,32 @@ const userModel = require("../models/userModel");
 //part 1
 const createUser = async function (req,res) {
  
-  let data = req.body;
-  let savedData = await userModel.create(data);
+  try{
+    let data = req.body;
+    if(Object.keys(data).length!==0){
+  let savedData = await userModel.create(data)
   
-  res.send({ msg: savedData });
+  res.status(201).send({ msg: savedData });}
+  else{res.status(400).send("bad request")}
+  
+  }
+  catch(err){res.status(400).send({ERROR:err.message})}
+
 }
 //part 2
 const loginUser = async function (req, res) {
-  let userName = req.body.emailId;
-  let password = req.body.password;
-
-  let user = await userModel.findOne({ emailId: userName, password: password });
-  if (!user)
-    return res.send({
+  try{
+    let data =req.body
+   
+if(Object.keys(data).length!==0)
+{
+        let user = await userModel.findOne({ emailId: data.emailId, password: data.password});
+     if (!user)
+   { return res.status(400).send({
       status: false,
       msg: "username or the password is not corerct",
-    });
-
+    })}
+else{
   let token = jwt.sign(
     {
       userId: user._id.toString(),
@@ -27,55 +36,69 @@ const loginUser = async function (req, res) {
       organisation: "FUnctionUp",
     },
     "functionup-thorium"
-  );
+  )
+  res.status(200).send({ status: true, data: token })}
   
-  res.send({ status: true, data: token });
+}
+  
+else{res.status(400).send("Bad Request")}
+
+}
+  
+catch(err){res.status(400).send({ERROR:err.message})}
 };
 
 //part 3
 
 const getUserData = async function (req, res) {
   
-
   let userId = req.params.userId;
   let userDetails = await userModel.findById(userId);
-  if (!userDetails)
-    return res.send({ status: false, msg: "No such user exists" });
+  
 
-  res.send({ status: true, data: userDetails });
+  res.status(200).send({ status: true, data: userDetails })
+  
+
+ 
 };
 
 
 //part 4
 const updateUser = async function (req, res) {
-  
+  try{
   let ptu= req.body
+  console.log(ptu)
   
-  let userId = req.params.userId;
-  let user = await userModel.findById(userId);
+  if(Object.keys(ptu).length!==0){
+  
+  
+  let updatedUser = await userModel.findOneAndUpdate({ _id: req.params.userId }, {$set:ptu},{new:true});
+  res.status(200).send({ status: "updated user", data: updatedUser });}
  
-  if (!user) {
-    return res.send("No such user exists");
-  }
+  else{res.status(400).send("Bad Request")}
+  
+  
+}
+  catch(err){res.status(400).send({ERROR:err.message})}
 
 
-  let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, {$set:ptu},{new:true});
-  res.send({ status: "updated user", data: updatedUser });
-};
+}
+
 
 
 //part 5 
 let deleteUser = async function(req,res){
-  let userId=req.params.userId
   
-  let user = await userModel.findById(userId);
+  try{
   
-  if (!user) {
-    return res.send("No such user exists");
-  }
+ 
+let user1 = await userModel.findOneAndUpdate({_id:req.params.userId},{$set:{isDeleted:true}},{new:true})
+res.status(200).send ({status : "deleted" , data: user1})
+ }
 
-let user1 = await userModel.findOneAndUpdate({_id:userId},{$set:{isDeleted:true}},{new:true})
-res.send ({status : "deleted" , data: user1})
+
+
+catch(err){res.status(400).send({ERROR:err.message})}
 
 
 }
